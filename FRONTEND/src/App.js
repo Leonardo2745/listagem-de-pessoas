@@ -1,39 +1,40 @@
-import FormPessoa from "./form-entra-pessoa/form-pessoa";
+//Imports de Componentes
+// import Titulo from "./titulo/titulo";
+import FormPessoa from "./form-entrada-pessoa/form-pessoa";
+import TablePessoa from "./table-lista-pessoas/table-pessoa";
+//Etilos CSS
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { useState, useEffect } from "react";
-import TablePessoa from "./table-pessoa/table-pessoa";
+//Outros imports
+import { useEffect, useState } from "react";
+import {apiGetPessoas, apiAddPessoa} from "./api/pessoa.service";
 
 function App() {
-const [dados, setDados] = useState([{}]);
-const [pessoa, setPessoa] = useState({
-  nome: "",
-  sobrenome: "",
-  idade: 0,
+  const [dados, setDados] = useState([{}]);
+  const [current, setCurrent] = useState({nome:null,sobrenome:null,idade:null})
 
-});
-
- 
-   useEffect(() =>{
+  useEffect(() => {
     fetchPessoas();
-   },{});
+  }, []);
 
-
-   const fetchPessoas = async () =>{
-    const resultado = await getPessoas();
+  const fetchPessoas = async () => {
+    const resultado = await apiGetPessoas();
     setDados(resultado);
+  };
 
-   };
-   
+  const handleAddPessoa = async (novoDado) =>{
+    await apiAddPessoa(novoDado)
+  }
+  
+
   return (
     <div className="App">
-      <FormPessoa pessoa={pessoa} setPessoa={setPessoa} />
+      <FormPessoa pessoa={current} insertPessoa={handleAddPessoa} />
       <TablePessoa pessoas={dados} />
     </div>
   );
+  }
 
 
-
-}
 
 export default App;
