@@ -1,25 +1,35 @@
-import logo from './logo.svg';
-import './App.css';
+import FormPessoa from "./form-entra-pessoa/form-pessoa";
+import "./App.css";
+import "bootstrap/dist/css/bootstrap.min.css";
+import { useState, useEffect } from "react";
+import TablePessoa from "./table-pessoa/table-pessoa";
 
 function App() {
+  const [dados, setDados] = useState([
+    { nome: "Iveto", sobrenome: "Olivero", idade: 17 },
+    { nome: "Netflixo", sobrenome: "Silvestre", idade: 29 },
+    { nome: "Calabreso", sobrenome: "Defumado", idade: 33 },
+    { nome: "Iço", sobrenome: "Crimo", idade: 23 },
+    { nome: "Doutoro", sobrenome: "Deolano", idade: 45 },
+  ]);
+
+
+
+  const salvar =(novaPessoa) =>{
+    setDados([...dados,novaPessoa])
+
+  }
+
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <FormPessoa method={salvar}/>
+      <TablePessoa pessoas={dados} />
     </div>
   );
+
+
+
 }
 
 export default App;
