@@ -11,26 +11,46 @@ import {apiGetPessoas, apiAddPessoa} from "./api/pessoa.service";
 
 function App() {
   const [dados, setDados] = useState([{}]);
-  const [current, setCurrent] = useState({nome:null,sobrenome:null,idade:null})
+  const [onAction, setAction] = useState(false);
+  const [selected, setSelected] = useState({nome:null,sobrenome:null,idade:null})
 
   useEffect(() => {
     fetchPessoas();
-  }, []);
+  }, [onAction]);
 
   const fetchPessoas = async () => {
     const resultado = await apiGetPessoas();
     setDados(resultado);
   };
 
-  const handleAddPessoa = async (novoDado) =>{
+  const handleSubmit = async (novoDado) =>{
     await apiAddPessoa(novoDado)
+    setAction(!onAction)
   }
   
+  const handleClick = (e, pessoa) =>{
+    console.log(pessoa)
+    if(e.type === 'click'){
+      const confirmarUpdate = window.confirm(
+        `Você quer atualizar os dados de ${pessoa.nome}`
+      )
+
+      if (confirmarUpdate) {
+        setSelected(pessoa)
+      }
+
+    } else if (e.type === 'contextmenu'){
+      e.preventDefault();
+      if(e.button === 2) {
+        console.log(`${pessoa.nome} será deletado`)
+      }
+    }
+  }
 
   return (
     <div className="App">
-      <FormPessoa pessoa={current} insertPessoa={handleAddPessoa} />
-      <TablePessoa pessoas={dados} />
+      <FormPessoa selected={selected} handleSubmit={handleSubmit} />
+      <TablePessoa pessoas={dados} handleClick={handleClick}/>
     </div>
   );
   }

@@ -5,13 +5,13 @@ import { Button } from "@mui/material";
 
 import "./form-pessoa.style.css";
 
-const FormPessoa = ({current, insertPessoa }) => {
+const FormPessoa = ({selected, handleSubmit }) => {
   const [pessoa, setPessoa] = useState({});
   
   const submit = (e) =>{
     e.preventDefault();
     console.log(pessoa)
-    insertPessoa(pessoa);
+    handleSubmit(pessoa);
   }
 
   return (
@@ -20,6 +20,7 @@ const FormPessoa = ({current, insertPessoa }) => {
         id="inNome"
         label="Nome"
         variant="outlined"
+        defaultValue={selected.nome}
         onChange={(e) => {
           setPessoa({ ...pessoa, nome: e.target.value });
         }}
@@ -28,6 +29,7 @@ const FormPessoa = ({current, insertPessoa }) => {
         id="inSobrenome"
         label="Sobrenome"
         variant="outlined"
+        defaultValue={selected.sobrenome}
         onChange={(e) => {
           setPessoa({ ...pessoa, sobrenome: e.target.value });
         }}
@@ -36,6 +38,7 @@ const FormPessoa = ({current, insertPessoa }) => {
         id="inIdade"
         label="Idade"
         variant="outlined"
+        defaultValue={selected.idade}
         onChange={(e) => {
           setPessoa({ ...pessoa, idade: e.target.value });
         }}
